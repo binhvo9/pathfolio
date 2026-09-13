@@ -1,20 +1,14 @@
 import Link from "next/link";
+import styles from "./page.module.css";
 
 export default function Home() {
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "column",
-        gap: "1rem",
-      }}
-    >
+    <main className={styles.page}>
       <h1>PathFolio</h1>
       <p>Robo-advisor simulator for beginner NZ investors.</p>
-      <Link href="/onboarding">Start onboarding →</Link>
+      <Link href="/onboarding" className={styles.button}>
+        Start onboarding →
+      </Link>
     </main>
   );
 }
