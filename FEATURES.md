@@ -543,6 +543,31 @@ something, add a line at the bottom instead of editing history above it.
     `destinationId` back rather than assuming the writes took.
     Still open: the Behance-style case-study write-up and the actual
     publish (Behance publishing is a manual step only the user can do).
+80. Caught and fixed a real prototype bug the user found by actually
+    clicking it (screenshot showed a blurred/ghosted cross-fade between
+    Sign-in and Onboarding-question): the `SMART_ANIMATE` transition on
+    all 12 reactions was trying to morph matching-named layers between
+    frames, but dozens of wrapper frames across different screens were
+    all named the generic default "Frame" — Smart Animate matched
+    unrelated layers across totally different screens, producing the
+    ghosting. Fixed by switching every reaction to `DISSOLVE`, then
+    (when the user still saw the same artifact — turned out to be a
+    stale cached Present tab) switched again to no transition at all
+    (instant swap) to remove any possible animation-timing ambiguity.
+    User confirmed it works after reopening the Present link fresh.
+    Also verified the "Anyone with the link can view" sharing setting
+    actually works for a logged-out visitor — cleared cookies in the
+    Playwright-controlled test browser and reloaded the proto URL fresh
+    rather than trusting the user's screenshot alone (a real check, not
+    a formality: the browser was mid-locked by a concurrent Playwright
+    session from this session's own earlier work, so the first two
+    verification attempts errored out before one finally worked).
+    Wrote `docs/ux/case-study.md` — the actual Behance-style write-up
+    (Role/Tools/Scope framing borrowed from the user's own Fortress
+    case study, the "one north-star question per screen" pattern, key
+    screens walkthrough, the color-identity decision, honest before/
+    after on both real mistakes caught during the build). Phase 8 is
+    now fully complete except the manual Behance publish step itself.
 71. Wrote `docs/diagrams/sequence/scenario-compare.md` — Phase 5's last
     remaining item, closing the phase out. Covers create (manual
     `POST /portfolios`) through compare (`/compare`'s two independent

@@ -127,12 +127,12 @@ scoped, since the case study needs real flow content to design against.
 - [x] Clickable prototype for the featured flow — 12 reactions wiring
       Sign in → Onboarding (2 screens) → Dashboard ↔ New scenario ↔
       Compare, verified by reading back every reaction's destination
-- [ ] Case study write-up in Behance style (process, decisions,
-      before/after, final screens) — reference:
-      [Donor Hub Blood Donation App](https://www.behance.net/gallery/253760559/Donor-Hub-Blood-Donation-Mobile-App-UX-Case-Study)
-      and the user's own [Fortress case study](https://www.behance.net/gallery/255617275/Fortress-Wealth-Rental-Portfolio-App),
-      simpler scope is fine
-- [ ] Publish to Behance
+- [x] Case study write-up in Behance style (process, decisions,
+      before/after, final screens) — `docs/ux/case-study.md`. Verified
+      the public prototype link actually works for a logged-out visitor
+      (cleared cookies in the test browser and reloaded fresh) before
+      writing "publicly viewable, no login required" into the write-up
+- [ ] Publish to Behance — manual step, only the user can do this
 
 ---
 
