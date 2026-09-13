@@ -90,7 +90,15 @@ append it to the Completed list in [FEATURES.md](FEATURES.md).
 
 ## Phase 7 — Ship it (portfolio packaging, do last)
 
-- [ ] Live demo deployed somewhere public
+- [x] Live demo deployed somewhere public — web on Vercel
+      (`https://pathfolio-web.vercel.app`), gateway + 4 microservices on
+      Railway. Repo pushed to `github.com/binhvo9/pathfolio` (public).
+      **Follow-up not yet done:** rotate `AUTH_SECRET` + Google/GitHub
+      OAuth client secrets (real values passed through this chat session
+      and the repo is now public — see CLAUDE.md's 2026-09-14 entry) and
+      do a full manual login test on the live site (only the OAuth
+      redirect URI + a 200 response were verified so far, not an actual
+      human sign-in)
 - [x] Written case study (problem → design decisions → trade-offs → outcome)
       — `docs/case-study.md`
 - [x] README with architecture diagrams embedded — `README.md` rewritten

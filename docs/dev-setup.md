@@ -71,20 +71,35 @@ means the server itself is up).
 
 ## Where things stand (see FEATURES.md for the full numbered log)
 
-Phases 0-5 fully done and verified live (onboarding through
-comparison/export/email, backend + UI). Phase 6 (API contract & docs
-cleanup) is done too: OpenAPI specs (`docs/api/`), the user journey
-diagram, the deployment diagram, and the API Gateway
-(`apps/api-gateway`, all of `apps/web`'s backend calls now go through it
-instead of 4 separate service URLs) are all built and verified live.
+Phases 0-6 fully done and verified live. Phase 7 (ship it) is done
+except the optional walkthrough video: live demo is up (web on Vercel
+at `https://pathfolio-web.vercel.app`, gateway + 4 microservices on
+Railway), the repo is pushed to `github.com/binhvo9/pathfolio`
+(public), case study + README are written. Phase 8 (Behance UX case
+study) is fully done too — Figma file, wireframes, hi-fi mockups, a
+wired prototype (public link, verified working for a logged-out
+visitor), the case-study write-up, and a ready-to-use publish package
+at `docs/ux/behance-package/` (images + copy-paste text +
+step-by-step instructions) — only the actual Behance "Publish" button
+press is left, and only a human can do that.
 
 ## Next up
 
-Phase 7 — ship it: live demo deployed (Vercel + Railway per
-`docs/diagrams/deployment.md`), written case study, README with
-diagrams embedded, cleaned-up repo/commit history, optional walkthrough
-video. See BACKLOG.md for the full checklist. Phase 8 (Behance UX case
-study in Figma) is independent and can start anytime.
+1. **Security follow-up from the live deploy (not urgent, but don't
+   forget it):** real secrets (`AUTH_SECRET`, Google/GitHub OAuth
+   client secrets) passed through the chat session that did the deploy,
+   and the repo is now public. Rotate both — `openssl rand -base64 32`
+   for `AUTH_SECRET`, a few clicks in each OAuth console for the
+   client secrets — then update them in Vercel's env vars. See
+   CLAUDE.md's 2026-09-14 entry for the full context.
+2. **Do a real manual login test on the live site** — only the OAuth
+   redirect URI and a 200 response were verified so far, not an actual
+   human sign-in end to end.
+3. Publish the Behance project — everything needed is in
+   `docs/ux/behance-package/INSTRUCTIONS.md`; only the user (or someone
+   with their Behance login) can do this.
+4. Optional: Phase 7's walkthrough video/GIF — the only unchecked,
+   non-optional-adjacent item left in the whole BACKLOG.md.
 
 ## Testing an authenticated page without going through OAuth
 

@@ -501,73 +501,6 @@ something, add a line at the bottom instead of editing history above it.
     email landed via Resend. Deleted the temporary session afterward.
     Typecheck and lint clean (one unused-var warning fixed by swapping a
     destructuring-omit pattern for `Object.fromEntries`/`filter`).
-79. Built out Phase 8 (Behance UX case study) via the Figma MCP
-    connector: research (`docs/ux/research.md` — problem statement,
-    persona "Chloe Ngata", user flow, deliberately skipping empathy
-    mapping/competitive analysis/usability testing since there's no real
-    user pool for a solo demo), then wireframes, then hi-fi mockups,
-    then a wired prototype, all in a new Figma file ("PathFolio — UX
-    Case Study", https://www.figma.com/design/uai3qul7EejytWFnnXvfN0).
-    Referenced two real Behance case studies for structure/style: the
-    user-provided Donor Hub example and the user's own prior project
-    "Fortress — Wealth & Rental Portfolio App" (published the day
-    before this session, also built with Figma MCP + Claude) —
-    Fortress's Role/Tools/Scope framing and "one north-star number per
-    screen" pattern are worth carrying into the eventual case-study
-    write-up.
-    Caught and fixed two real mistakes along the way, both surfaced by
-    the user's own review rather than self-caught: (1) the entire first
-    wireframe pass was built at a 320px mobile-app frame size, copying
-    the mobile-app precedent from Donor Hub/Fortress, when PathFolio is
-    actually a web app (`apps/web`, browser-based, real max-width 640px)
-    — rebuilt all 6 screens at desktop web frame sizes; (2) hi-fi
-    screens initially left huge dead whitespace around a narrow centered
-    column on a 1280px canvas — fixed by adding a left sidebar app shell
-    (logo, nav, user profile) to the 3 post-auth screens, which also
-    gave the case study a more complete "real app" feel. Also caught,
-    unprompted this time: the wireframes' accent color
-    ({r:0.15,g:0.4,b:0.35}, a forest green) was near-identical to
-    Fortress's forest-green+gold identity — asked the user, then
-    recolored every screen to a blue-based palette instead, including a
-    stray gold persona-avatar color that the first color-replacement
-    pass missed.
-    Hi-fi mockups add real visual polish beyond the wireframe pass:
-    drop shadows, a gradient hero background + logo mark on Sign in,
-    color-coded allocation bars/swatches per asset class, a
-    gradient-fill area chart with a highlighted endpoint dot on Compare,
-    and status/change-percent detail on dashboard cards.
-    Built a real clickable prototype: 12 `ON_CLICK` → `NAVIGATE`
-    reactions (Sign in → Onboarding question → Onboarding result →
-    Dashboard, then Dashboard ↔ New scenario ↔ Compare via both primary
-    CTAs and sidebar nav items) — verified by reading every reaction's
-    `destinationId` back rather than assuming the writes took.
-    Still open: the Behance-style case-study write-up and the actual
-    publish (Behance publishing is a manual step only the user can do).
-80. Caught and fixed a real prototype bug the user found by actually
-    clicking it (screenshot showed a blurred/ghosted cross-fade between
-    Sign-in and Onboarding-question): the `SMART_ANIMATE` transition on
-    all 12 reactions was trying to morph matching-named layers between
-    frames, but dozens of wrapper frames across different screens were
-    all named the generic default "Frame" — Smart Animate matched
-    unrelated layers across totally different screens, producing the
-    ghosting. Fixed by switching every reaction to `DISSOLVE`, then
-    (when the user still saw the same artifact — turned out to be a
-    stale cached Present tab) switched again to no transition at all
-    (instant swap) to remove any possible animation-timing ambiguity.
-    User confirmed it works after reopening the Present link fresh.
-    Also verified the "Anyone with the link can view" sharing setting
-    actually works for a logged-out visitor — cleared cookies in the
-    Playwright-controlled test browser and reloaded the proto URL fresh
-    rather than trusting the user's screenshot alone (a real check, not
-    a formality: the browser was mid-locked by a concurrent Playwright
-    session from this session's own earlier work, so the first two
-    verification attempts errored out before one finally worked).
-    Wrote `docs/ux/case-study.md` — the actual Behance-style write-up
-    (Role/Tools/Scope framing borrowed from the user's own Fortress
-    case study, the "one north-star question per screen" pattern, key
-    screens walkthrough, the color-identity decision, honest before/
-    after on both real mistakes caught during the build). Phase 8 is
-    now fully complete except the manual Behance publish step itself.
 71. Wrote `docs/diagrams/sequence/scenario-compare.md` — Phase 5's last
     remaining item, closing the phase out. Covers create (manual
     `POST /portfolios`) through compare (`/compare`'s two independent
@@ -697,3 +630,93 @@ something, add a line at the bottom instead of editing history above it.
     afterward, both the new README and case-study present and matching
     the latest edits. No remote configured yet — pushing to an actual
     GitHub repo is Phase 7's separate "live demo" item, not done here.
+79. Built out Phase 8 (Behance UX case study) via the Figma MCP
+    connector: research (`docs/ux/research.md` — problem statement,
+    persona "Chloe Ngata", user flow, deliberately skipping empathy
+    mapping/competitive analysis/usability testing since there's no real
+    user pool for a solo demo), then wireframes, then hi-fi mockups,
+    then a wired prototype, all in a new Figma file ("PathFolio — UX
+    Case Study", https://www.figma.com/design/uai3qul7EejytWFnnXvfN0).
+    Referenced two real Behance case studies for structure/style: the
+    user-provided Donor Hub example and the user's own prior project
+    "Fortress — Wealth & Rental Portfolio App" (published the day
+    before this session, also built with Figma MCP + Claude) —
+    Fortress's Role/Tools/Scope framing and "one north-star number per
+    screen" pattern are worth carrying into the eventual case-study
+    write-up.
+    Caught and fixed two real mistakes along the way, both surfaced by
+    the user's own review rather than self-caught: (1) the entire first
+    wireframe pass was built at a 320px mobile-app frame size, copying
+    the mobile-app precedent from Donor Hub/Fortress, when PathFolio is
+    actually a web app (`apps/web`, browser-based, real max-width 640px)
+    — rebuilt all 6 screens at desktop web frame sizes; (2) hi-fi
+    screens initially left huge dead whitespace around a narrow centered
+    column on a 1280px canvas — fixed by adding a left sidebar app shell
+    (logo, nav, user profile) to the 3 post-auth screens, which also
+    gave the case study a more complete "real app" feel. Also caught,
+    unprompted this time: the wireframes' accent color
+    ({r:0.15,g:0.4,b:0.35}, a forest green) was near-identical to
+    Fortress's forest-green+gold identity — asked the user, then
+    recolored every screen to a blue-based palette instead, including a
+    stray gold persona-avatar color that the first color-replacement
+    pass missed.
+    Hi-fi mockups add real visual polish beyond the wireframe pass:
+    drop shadows, a gradient hero background + logo mark on Sign in,
+    color-coded allocation bars/swatches per asset class, a
+    gradient-fill area chart with a highlighted endpoint dot on Compare,
+    and status/change-percent detail on dashboard cards.
+    Built a real clickable prototype: 12 `ON_CLICK` → `NAVIGATE`
+    reactions (Sign in → Onboarding question → Onboarding result →
+    Dashboard, then Dashboard ↔ New scenario ↔ Compare via both primary
+    CTAs and sidebar nav items) — verified by reading every reaction's
+    `destinationId` back rather than assuming the writes took.
+    Still open: the Behance-style case-study write-up and the actual
+    publish (Behance publishing is a manual step only the user can do).
+80. Caught and fixed a real prototype bug the user found by actually
+    clicking it (screenshot showed a blurred/ghosted cross-fade between
+    Sign-in and Onboarding-question): the `SMART_ANIMATE` transition on
+    all 12 reactions was trying to morph matching-named layers between
+    frames, but dozens of wrapper frames across different screens were
+    all named the generic default "Frame" — Smart Animate matched
+    unrelated layers across totally different screens, producing the
+    ghosting. Fixed by switching every reaction to `DISSOLVE`, then
+    (when the user still saw the same artifact — turned out to be a
+    stale cached Present tab) switched again to no transition at all
+    (instant swap) to remove any possible animation-timing ambiguity.
+    User confirmed it works after reopening the Present link fresh.
+    Also verified the "Anyone with the link can view" sharing setting
+    actually works for a logged-out visitor — cleared cookies in the
+    Playwright-controlled test browser and reloaded the proto URL fresh
+    rather than trusting the user's screenshot alone (a real check, not
+    a formality: the browser was mid-locked by a concurrent Playwright
+    session from this session's own earlier work, so the first two
+    verification attempts errored out before one finally worked).
+    Wrote `docs/ux/case-study.md` — the actual Behance-style write-up
+    (Role/Tools/Scope framing borrowed from the user's own Fortress
+    case study, the "one north-star question per screen" pattern, key
+    screens walkthrough, the color-identity decision, honest before/
+    after on both real mistakes caught during the build). Phase 8 is
+    now fully complete except the manual Behance publish step itself.
+81. Exported 8 real screens from the Hi-Fi/Cover/User-Flow Figma pages
+    (`download_assets`, 2560px PNGs) and packaged
+    `docs/ux/behance-package/` — images + `case-study-text.md`
+    (copy-paste-ready module text) + `links.md` + `INSTRUCTIONS.md` (a
+    13-module step-by-step: cover image choice, title/tags/description,
+    module order, a pre-publish checklist, troubleshooting) — self-
+    contained enough to hand to a different agent or the user with no
+    other context. User's own request, explicitly for handoff.
+82. Housekeeping: found and fixed a self-inflicted FEATURES.md ordering
+    bug — entries 79/80 (Phase 8) had been inserted right after entry
+    70 instead of after 78, because an earlier `Edit` call anchored on
+    stale surrounding text instead of the file's true end at the time.
+    Content and numbers were both already correct, only the position
+    was wrong (70 → 79 → 80 → 71 → ... → 78 instead of 70 → 71 → ... →
+    78 → 79 → 80). Relocated the block, no content changes. Also
+    reflected the *other* concurrent session's work here for
+    continuity: it deployed PathFolio live (`pathfolio-web.vercel.app`
+    on Vercel, gateway + 4 microservices on Railway) and pushed the
+    repo to `github.com/binhvo9/pathfolio` (public) — see CLAUDE.md's
+    2026-09-14 entry for the full deploy log, including the open
+    follow-up to rotate `AUTH_SECRET` and the OAuth client secrets
+    since real values passed through that chat session and the repo is
+    now public.
