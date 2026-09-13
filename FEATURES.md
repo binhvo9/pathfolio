@@ -608,3 +608,25 @@ something, add a line at the bottom instead of editing history above it.
     `docs/diagrams/deployment.md` to show the Gateway's real position,
     updated `docs/dev-setup.md` for the new 6th process. Phase 6 is now
     fully complete.
+78. Ran 3 Phase 7 items in parallel (user asked for it explicitly): a
+    background agent wrote `docs/case-study.md` (problem → design
+    decisions → trade-offs → outcome, ~1,970 words, sourced only from
+    CLAUDE.md/REQUIREMENTS.md/BACKLOG.md/FEATURES.md, no invented
+    detail), a second background agent rewrote the stale `README.md`
+    (previously described a planned `src/services/*` layout that never
+    matched what got built — now describes the real `apps/*` npm-
+    workspaces monorepo, links every diagram and both OpenAPI specs).
+    Reviewed both outputs before trusting them; fixed one small staleness
+    (README said the case study wasn't done yet, written moments before
+    the case-study agent's own completion landed).
+    Kept `git init`/commit sequential and separate from the two parallel
+    writers on purpose — running a commit concurrently with two agents
+    still writing files risked committing a half-finished state. Added
+    `.next/` to `.gitignore` (Next.js build output wasn't excluded
+    before), then `git init` — which turned out to already produce one
+    complete, clean initial commit automatically (250 files) rather than
+    needing a manual `git add`+`git commit`. Verified it before trusting
+    it: no `.env` file anywhere in the commit, working tree clean
+    afterward, both the new README and case-study present and matching
+    the latest edits. No remote configured yet — pushing to an actual
+    GitHub repo is Phase 7's separate "live demo" item, not done here.

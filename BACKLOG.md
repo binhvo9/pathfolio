@@ -91,9 +91,14 @@ append it to the Completed list in [FEATURES.md](FEATURES.md).
 ## Phase 7 — Ship it (portfolio packaging, do last)
 
 - [ ] Live demo deployed somewhere public
-- [ ] Written case study (problem → design decisions → trade-offs → outcome)
-- [ ] README with architecture diagrams embedded
-- [ ] GitHub repo cleaned up, good commit history
+- [x] Written case study (problem → design decisions → trade-offs → outcome)
+      — `docs/case-study.md`
+- [x] README with architecture diagrams embedded — `README.md` rewritten
+      to match the real monorepo layout, links every diagram + OpenAPI spec
+- [x] GitHub repo cleaned up, good commit history — git initialized,
+      `.gitignore` covers `.env`/`.next`/node_modules, one clean initial
+      commit (250 files, verified no secrets included); not yet pushed to
+      an actual GitHub remote
 - [ ] Short video/GIF walkthrough (optional but strong for recruiters)
 
 ## Phase 8 — UX/UI design case study (Behance, separate audience from Phase 7)
