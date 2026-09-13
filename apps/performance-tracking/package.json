@@ -2,11 +2,12 @@
   "name": "@pathfolio/performance-tracking",
   "private": true,
   "version": "0.0.0",
-  "description": "Performance Tracking microservice — docs/specs/06-performance-tracking.md",
+  "description": "Performance Tracking microservice \u2014 docs/specs/06-performance-tracking.md",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "start": "tsx src/index.ts"
   },
   "dependencies": {
     "@pathfolio/shared": "^0.0.0",

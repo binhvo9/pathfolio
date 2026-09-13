@@ -2,12 +2,14 @@
   "name": "@pathfolio/simulation",
   "private": true,
   "version": "0.0.0",
-  "description": "Portfolio Simulation microservice — docs/specs/04-portfolio-simulation.md",
+  "description": "Portfolio Simulation microservice \u2014 docs/specs/04-portfolio-simulation.md",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "worker": "tsx watch src/worker.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "start": "tsx src/index.ts",
+    "start:worker": "tsx src/worker.ts"
   },
   "dependencies": {
     "@pathfolio/shared": "^0.0.0",

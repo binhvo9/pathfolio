@@ -2,11 +2,12 @@
   "name": "@pathfolio/market-data",
   "private": true,
   "version": "0.0.0",
-  "description": "Market Data microservice — docs/specs/05-market-data.md",
+  "description": "Market Data microservice \u2014 docs/specs/05-market-data.md",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "start": "tsx src/index.ts"
   },
   "dependencies": {
     "@pathfolio/shared": "^0.0.0",

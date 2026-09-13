@@ -2,11 +2,12 @@
   "name": "@pathfolio/api-gateway",
   "private": true,
   "version": "0.0.0",
-  "description": "API Gateway — single ingress for apps/web, routes by path prefix to the 4 microservices. docs/specs/08-api-gateway.md",
+  "description": "API Gateway \u2014 single ingress for apps/web, routes by path prefix to the 4 microservices. docs/specs/08-api-gateway.md",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "start": "tsx src/index.ts"
   },
   "dependencies": {
     "@fastify/http-proxy": "^11.6.2",

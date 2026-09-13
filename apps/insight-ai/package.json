@@ -2,11 +2,12 @@
   "name": "@pathfolio/insight-ai",
   "private": true,
   "version": "0.0.0",
-  "description": "Insight/AI microservice — docs/specs/07-insight-ai.md",
+  "description": "Insight/AI microservice \u2014 docs/specs/07-insight-ai.md",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "start": "tsx src/index.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.699.0",
