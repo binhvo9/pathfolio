@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { Spinner } from "@/components/Spinner";
 import styles from "./compare.module.css";
 
 // Scenario comparison view — BACKLOG.md Phase 5's "chart + AI insight
@@ -154,7 +155,12 @@ function ComparePageInner() {
         </Link>
         <h1 className={styles.title}>Comparing {ids.length} scenarios</h1>
 
-        {seriesData === null && <p className={styles.empty}>Loading...</p>}
+        {seriesData === null && (
+          <p className={styles.empty}>
+            <Spinner />
+            Loading...
+          </p>
+        )}
 
         {seriesData && (
           <div className={styles.card}>

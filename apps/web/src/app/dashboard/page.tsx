@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ASSET_CLASSES, type AssetClass } from "@pathfolio/shared";
+import { Spinner } from "@/components/Spinner";
 import styles from "./dashboard.module.css";
 
 const ASSET_CLASS_LABEL: Record<AssetClass, string> = {
@@ -194,7 +195,12 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {scenarios === null && <p className={styles.empty}>Loading...</p>}
+        {scenarios === null && (
+          <p className={styles.empty}>
+            <Spinner />
+            Loading...
+          </p>
+        )}
         {scenarios?.length === 0 && (
           <p className={styles.empty}>No scenarios yet — complete onboarding to create your first one.</p>
         )}

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { Spinner } from "@/components/Spinner";
 import styles from "./portfolio.module.css";
 
 // Performance history view — BACKLOG.md Phase 4's "per portfolio, over
@@ -288,7 +289,12 @@ export default function PortfolioPage() {
         </Link>
         <h1 className={styles.title}>Performance history</h1>
 
-        {snapshots === null && <p className={styles.empty}>Loading...</p>}
+        {snapshots === null && (
+          <p className={styles.empty}>
+            <Spinner />
+            Loading...
+          </p>
+        )}
 
         {snapshots?.length === 0 && (
           <p className={styles.empty}>
