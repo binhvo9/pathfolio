@@ -1,0 +1,190 @@
+openapi: 3.1.0
+info:
+  title: PathFolio — Portfolio Simulation
+  version: "1.0.0"
+  description: |
+    A real independent microservice (`apps/simulation`, its own deployable,
+    its own Fastify process) — unlike User & Onboarding's modular monolith.
+    Demonstrates the CAP-theorem trade-off called out in CLAUDE.md's
+    services table: this service chooses **AP** (availability +
+    partition tolerance over strict consistency), backed by MongoDB Atlas.
+
+    This is the service's own internal API, not the public one a browser
+    calls — apps/web proxies a subset of it (see `src/lib/simulation-client.ts`
+    + `/api/simulation/*`) after verifying the user's session, forwarding
+    the real `userId` as a trusted header. A browser never holds
+    `INTERNAL_API_KEY` directly.
+  contact:
+    name: docs/specs/04-portfolio-simulation.md
+
+servers:
+  - url: http://localhost:4001
+    description: Local dev (apps/simulation)
+
+security:
+  - internalApiKey: []
+    userIdHeader: []
+
+paths:
+  /portfolios:
+    post:
+      summary: Create a scenario portfolio
+      operationId: createPortfolio
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, allocation]
+              properties:
+                name: { type: string }
+                allocation:
+                  $ref: "#/components/schemas/Allocation"
+      responses:
+        "201":
+          description: Created (status starts as Draft, source "manual")
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Portfolio"
+        "400":
+          description: Invalid name, or allocation doesn't sum to 100
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    get:
+      summary: List the caller's scenario portfolios
+      operationId: listPortfolios
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Portfolio"
+
+  /portfolios/{id}:
+    delete:
+      summary: Delete a scenario portfolio
+      operationId: deletePortfolio
+      parameters:
+        - $ref: "#/components/parameters/PortfolioId"
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found (or not owned by the caller)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /portfolios/{id}/activate:
+    patch:
+      summary: Move a portfolio to Active
+      description: See docs/diagrams/state/portfolio-lifecycle.md (Draft → Active → Archived).
+      operationId: activatePortfolio
+      parameters:
+        - $ref: "#/components/parameters/PortfolioId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [Active]
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /portfolios/{id}/archive:
+    patch:
+      summary: Move a portfolio to Archived
+      operationId: archivePortfolio
+      parameters:
+        - $ref: "#/components/parameters/PortfolioId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [Archived]
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  securitySchemes:
+    internalApiKey:
+      type: apiKey
+      in: header
+      name: x-internal-api-key
+      description: Shared secret between apps/web (or another internal caller) and this service — the trusted-caller pattern in @pathfolio/shared.
+    userIdHeader:
+      type: apiKey
+      in: header
+      name: x-user-id
+      description: The real user id, forwarded by the trusted caller after it has already verified the actual end-user session. This service does not verify end-user identity itself.
+
+  parameters:
+    PortfolioId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+
+  schemas:
+    Allocation:
+      type: object
+      description: 6 asset classes, percentages summing to 100 (± rounding tolerance).
+      required: [stocks, bonds, cash, crypto, gold, realEstate]
+      properties:
+        stocks: { type: number }
+        bonds: { type: number }
+        cash: { type: number }
+        crypto: { type: number }
+        gold: { type: number }
+        realEstate: { type: number }
+
+    Portfolio:
+      type: object
+      properties:
+        id: { type: string }
+        userId: { type: string }
+        name: { type: string }
+        allocation:
+          $ref: "#/components/schemas/Allocation"
+        status:
+          type: string
+          enum: [Draft, Active, Archived]
+        source:
+          type: string
+          enum: [manual, onboarding-default]
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string

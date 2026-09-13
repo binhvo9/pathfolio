@@ -1,0 +1,283 @@
+.page {
+  min-height: 100vh;
+  padding: 3rem 1.5rem;
+  display: flex;
+  justify-content: center;
+  background: var(--color-bg);
+}
+
+.container {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.back {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  width: fit-content;
+}
+
+.title {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+/* Hero stat */
+.hero {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.heroValue {
+  font-size: 2.5rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.heroDelta {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.heroCaption {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.positive {
+  color: var(--color-accent);
+}
+
+.negative {
+  color: var(--color-negative);
+}
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  padding: 1.5rem;
+  position: relative;
+}
+
+.chart {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.axisLabel {
+  font-size: 10px;
+  fill: var(--color-text-faint);
+  font-family: ui-monospace, monospace;
+}
+
+.gridline {
+  stroke: var(--color-gridline);
+  stroke-width: 1;
+}
+
+.line {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.area {
+  fill: var(--color-accent);
+  fill-opacity: 0.1;
+}
+
+.endDot {
+  fill: var(--color-accent);
+  stroke: white;
+  stroke-width: 2;
+}
+
+.crosshair {
+  stroke: var(--color-text-faint);
+  stroke-width: 1;
+  pointer-events: none;
+}
+
+.hoverDot {
+  fill: var(--color-accent);
+  stroke: white;
+  stroke-width: 2;
+  pointer-events: none;
+}
+
+.hitLayer {
+  fill: transparent;
+  cursor: crosshair;
+}
+
+.tooltip {
+  position: absolute;
+  background: var(--color-text);
+  color: white;
+  font-size: 0.78rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  pointer-events: none;
+  white-space: nowrap;
+  transform: translate(-50%, -115%);
+}
+
+.tooltipValue {
+  font-weight: 600;
+}
+
+.breakdownTitle {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin: 0 0 1rem;
+}
+
+.breakdownRows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.breakdownRow {
+  display: grid;
+  grid-template-columns: 80px 1fr 64px;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.82rem;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0.2rem 0;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.breakdownRow:disabled {
+  cursor: default;
+}
+
+.breakdownLabel {
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.chevron {
+  font-size: 0.65rem;
+  color: var(--color-text-faint);
+  width: 0.7rem;
+}
+
+.holdingsWrap {
+  padding: 0.4rem 0 0.4rem 1.4rem;
+}
+
+.holdingsTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+
+.holdingsTable th,
+.holdingsTable td {
+  text-align: left;
+  padding: 0.3rem 0.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.holdingsTable td {
+  color: var(--color-text-secondary);
+}
+
+.holdingsTable td.positive {
+  color: var(--color-accent);
+}
+
+.holdingsTable td.negative {
+  color: var(--color-negative);
+}
+
+.holdingsTable th {
+  font-weight: 500;
+  color: var(--color-text-faint);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.breakdownTrack {
+  position: relative;
+  height: 10px;
+  background: var(--color-track);
+  border-radius: 5px;
+}
+
+.breakdownMid {
+  position: absolute;
+  left: 50%;
+  top: -2px;
+  bottom: -2px;
+  width: 1px;
+  background: var(--color-border-muted);
+}
+
+.breakdownBar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 3px;
+}
+
+.breakdownBarPositive {
+  background: var(--color-accent);
+}
+
+.breakdownBarNegative {
+  background: var(--color-negative);
+}
+
+.breakdownValue {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.empty {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+.details summary {
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  margin-top: 0.75rem;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--color-gridline);
+  font-variant-numeric: tabular-nums;
+}

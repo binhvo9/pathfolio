@@ -1,0 +1,22 @@
+{
+  "name": "@pathfolio/market-data",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Market Data microservice — docs/specs/05-market-data.md",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@pathfolio/shared": "^0.0.0",
+    "@upstash/ratelimit": "^2.0.5",
+    "@upstash/redis": "^1.38.3",
+    "fastify": "^5.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "tsx": "^4.19.2",
+    "typescript": "^5"
+  }
+}

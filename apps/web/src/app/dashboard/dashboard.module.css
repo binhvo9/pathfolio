@@ -1,0 +1,201 @@
+.page {
+  min-height: 100vh;
+  padding: 3rem 1.5rem;
+  display: flex;
+  justify-content: center;
+  background: var(--color-bg);
+}
+
+.container {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.title {
+  font-size: 1.6rem;
+  margin: 0;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.newButton {
+  font-size: 0.85rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--radius-control);
+  border: 1px solid var(--color-border-muted);
+  background: var(--color-surface);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.newForm {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.fieldLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+.textInput,
+.numberInput {
+  font-size: 0.95rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-border-muted);
+  background: var(--color-bg);
+  color: inherit;
+}
+
+.numberInput {
+  width: 100%;
+}
+
+.allocationGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.75rem;
+}
+
+.allocationSumOk {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-accent);
+}
+
+.allocationSumBad {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-negative);
+}
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.name {
+  flex: 1;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.name:hover {
+  text-decoration: underline;
+}
+
+.badge {
+  font-family: ui-monospace, monospace;
+  font-size: 0.72rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border-muted);
+  text-transform: uppercase;
+}
+
+.badgeDraft {
+  color: var(--color-draft);
+  border-color: var(--color-draft-border);
+  background: var(--color-draft-soft);
+}
+
+.badgeActive {
+  color: var(--color-accent);
+  border-color: var(--color-active-border);
+  background: var(--color-accent-soft);
+}
+
+.badgeArchived {
+  color: var(--color-text-muted);
+  border-color: var(--color-border-muted);
+  background: var(--color-track);
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.actionButton {
+  font-size: 0.82rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-border-muted);
+  background: var(--color-surface);
+  cursor: pointer;
+}
+
+.actionButtonDanger {
+  color: var(--color-negative);
+  border-color: var(--color-negative-soft);
+}
+
+.reportStatus {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.reportStatusError {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--color-negative);
+}
+
+.empty {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+.compareCheckbox {
+  display: flex;
+  align-items: center;
+}
+
+.compareCheckbox input {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.compareButton {
+  display: block;
+  text-align: center;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-control);
+  background: var(--color-accent);
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+}

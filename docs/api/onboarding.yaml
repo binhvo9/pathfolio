@@ -1,0 +1,233 @@
+openapi: 3.1.0
+info:
+  title: PathFolio — User & Onboarding
+  version: "1.0.0"
+  description: |
+    User & Onboarding is a deliberate **modular monolith** (auth + profile +
+    risk questionnaire live together because they're always used together —
+    see CLAUDE.md's "Architecture decision"). It has no separate deployable:
+    this API *is* the Next.js route handlers under `apps/web/src/app/api/`.
+
+    Auth is session-cookie based (NextAuth.js / Auth.js v5, database session
+    strategy, Google/GitHub OAuth only — no credentials provider). There is
+    no API key for this service; a request is authenticated purely by
+    holding a valid session cookie, exactly as a browser would after
+    signing in.
+  contact:
+    name: docs/specs/01-auth-user-schema.md, 02-risk-questionnaire.md, 03-allocation-engine.md
+
+servers:
+  - url: http://localhost:3000/api
+    description: Local dev (apps/web)
+
+security:
+  - sessionCookie: []
+
+paths:
+  /onboarding/questionnaire:
+    get:
+      summary: Get the questionnaire's static question definitions
+      description: >
+        Pure config, not a DB read — the same 4 questions for every user
+        (docs/specs/02-risk-questionnaire.md).
+      operationId: getQuestionnaire
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [questions]
+                properties:
+                  questions:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/QuestionDefinition"
+    post:
+      summary: Submit questionnaire answers, get back a scored RiskProfile
+      description: >
+        Scores risk_band + income_tilt_band (spec 02), computes
+        default_allocation (spec 03), saves the RiskProfile, then
+        fire-and-forget publishes `UserOnboarded` onto the event bus so
+        Portfolio Simulation can seed the user's first scenario
+        asynchronously (docs/diagrams/sequence/onboarding.md) — this
+        response does not wait for that to happen.
+      operationId: submitQuestionnaire
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Answers"
+      responses:
+        "200":
+          description: Scored and saved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RiskProfile"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /profile:
+    get:
+      summary: Get the current user's profile + RiskProfile
+      operationId: getProfile
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          description: User not found
+    patch:
+      summary: Update display name / avatar
+      description: >
+        Only touches `name`/`image` — risk fields belong to the
+        questionnaire endpoint above, not here
+        (docs/specs/01-auth-user-schema.md's API section).
+      operationId: updateProfile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                image:
+                  type: string
+                  format: uri
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: authjs.session-token
+      description: >
+        Set by NextAuth after OAuth sign-in (database session strategy).
+        `__Secure-authjs.session-token` in production (HTTPS).
+
+  responses:
+    Unauthorized:
+      description: No valid session cookie
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Unauthorized
+
+  schemas:
+    Goal:
+      type: string
+      enum: [RETIREMENT, HOUSE_DEPOSIT, GENERAL_GROWTH]
+    RiskBand:
+      type: string
+      enum: [CONSERVATIVE, BALANCED, GROWTH, AGGRESSIVE]
+    IncomeTiltBand:
+      type: string
+      enum: [INCOME_FOCUSED, BALANCED, GROWTH_FOCUSED]
+
+    Allocation:
+      type: object
+      description: 6 asset classes, percentages summing to 100.
+      required: [stocks, bonds, cash, crypto, gold, realEstate]
+      properties:
+        stocks: { type: number }
+        bonds: { type: number }
+        cash: { type: number }
+        crypto: { type: number }
+        gold: { type: number }
+        realEstate: { type: number }
+
+    Answers:
+      type: object
+      required: [goal, timeHorizonYears, riskTolerance, incomeNeed]
+      properties:
+        goal:
+          $ref: "#/components/schemas/Goal"
+        timeHorizonYears:
+          type: integer
+          minimum: 1
+          maximum: 30
+        riskTolerance:
+          type: string
+          enum: [SELL_ALL, SELL_SOME, DO_NOTHING, BUY_MORE]
+        incomeNeed:
+          type: string
+          enum: [NEED_REGULAR, BALANCED, LET_IT_GROW]
+
+    QuestionDefinition:
+      type: object
+      required: [id, label]
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        inputType:
+          type: string
+          example: slider
+        min:
+          type: integer
+        max:
+          type: integer
+        options:
+          type: array
+          items:
+            type: object
+            required: [value, label]
+            properties:
+              value: { type: string }
+              label: { type: string }
+
+    RiskProfile:
+      type: object
+      properties:
+        id: { type: string }
+        userId: { type: string }
+        goal:
+          oneOf: [{ $ref: "#/components/schemas/Goal" }, { type: "null" }]
+        timeHorizonYears: { type: ["integer", "null"] }
+        riskScore: { type: ["integer", "null"] }
+        riskBand:
+          oneOf: [{ $ref: "#/components/schemas/RiskBand" }, { type: "null" }]
+        incomeTiltScore: { type: ["integer", "null"] }
+        incomeTiltBand:
+          oneOf: [{ $ref: "#/components/schemas/IncomeTiltBand" }, { type: "null" }]
+        defaultAllocation:
+          oneOf: [{ $ref: "#/components/schemas/Allocation" }, { type: "null" }]
+        questionnaireCompletedAt: { type: ["string", "null"], format: date-time }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+
+    User:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: ["string", "null"] }
+        email: { type: ["string", "null"], format: email }
+        image: { type: ["string", "null"], format: uri }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+        riskProfile:
+          oneOf: [{ $ref: "#/components/schemas/RiskProfile" }, { type: "null" }]

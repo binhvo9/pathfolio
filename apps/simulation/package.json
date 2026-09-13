@@ -1,0 +1,23 @@
+{
+  "name": "@pathfolio/simulation",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Portfolio Simulation microservice — docs/specs/04-portfolio-simulation.md",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "worker": "tsx watch src/worker.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@pathfolio/shared": "^0.0.0",
+    "@upstash/redis": "^1.38.3",
+    "fastify": "^5.2.0",
+    "mongodb": "^6.12.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "tsx": "^4.19.2",
+    "typescript": "^5"
+  }
+}
