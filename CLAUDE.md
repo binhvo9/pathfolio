@@ -303,3 +303,81 @@ write it here so context survives across sessions.
   apps/web, Railway's per-service routing + automatic health-check
   restarts front the 4 microservices. See
   `docs/diagrams/deployment.md` for the full diagram
+
+### 2026-09-13 — First live deploy: Vercel (web) + Railway (5 services), real bugs found and fixed
+- Repo pushed to GitHub for the first time (`binhvo9/pathfolio`, public —
+  matches the recruiter-portfolio goal, source visible next to the demo).
+  `.railway/railway.ts` (Infrastructure-as-Code) defines all 6 Railway
+  services: api-gateway, market-data, performance-tracking, insight-ai,
+  simulation, and simulation-worker (Simulation's separate
+  `UserOnboarded` consumer process — distinct from Performance
+  Tracking's in-process snapshot worker). Root directory stays the repo
+  root for all of them (not the app subfolder) because these are npm
+  workspaces — `@pathfolio/shared` only resolves when install runs from
+  the root; each service's actual entry point is scoped via
+  `npm run start --workspace=apps/<name>`
+- `apps/web` deployed separately on Vercel (project `pathfolio-web`,
+  root directory `apps/web`) — the MCP Vercel connector couldn't create
+  the project itself (403 forbidden, permission issue on that token),
+  so the user did the dashboard import manually
+- Real bugs hit and fixed during this first deploy (all now fixed at
+  the root, not worked around):
+  - Every service's `package.json` only had `dev` (`tsx watch`), no
+    production `start` script — added `"start": "tsx src/index.ts"` to
+    all 5 Fastify services (`api-gateway`, `insight-ai`, `market-data`,
+    `performance-tracking`, `simulation`) and `"start:worker"` to
+    `simulation` for its separate consumer process
+  - `apps/web`'s Prisma client (`src/generated/prisma`) is gitignored
+    and was never regenerated on install — added
+    `"postinstall": "prisma generate"` to `apps/web/package.json`,
+    required for any fresh clone/deploy, not just this one
+  - **MongoDB Atlas was blocking Railway's connections** — Network
+    Access List didn't include Railway's (dynamic, non-static) egress
+    IPs, so every Mongo-backed service (`simulation`,
+    `performance-tracking`, `insight-ai`) hung on connect until
+    Mongo's server-selection timeout, then failed every subsequent
+    request with `"Topology is closed"` until restarted. Fixed by
+    adding `0.0.0.0/0` ("Allow Access from Anywhere") to the Atlas
+    project's Network Access List — the standard fix for any platform
+    without a static outbound IP (Railway and Vercel both qualify).
+    Auth (username/password) still protects the cluster
+  - Homepage's onboarding CTA was an unstyled `<Link>` (looked like
+    plain text, not a button) — restyled using the same design-token
+    button look as `apps/web/src/app/onboarding` (`--color-accent`,
+    `--radius-control`), via a new `page.module.css`
+  - Three pages (`dashboard`, `compare`, `portfolio/[id]`) rendered a
+    static "Loading..." string with no motion, indistinguishable from a
+    hung page — added a shared `src/components/Spinner.tsx` (CSS
+    `@keyframes` spin, reads `--color-accent`/`--color-border-muted`)
+    used in all three
+- **Live URLs**: web `https://pathfolio-web.vercel.app`, gateway
+  `https://api-gateway-production-933c.up.railway.app` (the other 4
+  Railway services aren't meant to be called directly by a browser —
+  apps/web only ever talks to the gateway)
+- **Reused the existing dev secrets/credentials as the live
+  environment's** (Neon, MongoDB Atlas, Upstash, Gemini, R2, Resend,
+  Finnhub, Google/GitHub OAuth apps) rather than provisioning separate
+  prod credentials — explicit user call, consistent with this being a
+  demo-scale personal project already living within free-tier
+  guardrails ([[Metered API guardrails]]). Practical consequence
+  already observed: logging into the live site with an account that
+  was used for local dev resumes mid-onboarding instead of starting
+  fresh, because it's the same Neon/Mongo data
+- Google/GitHub OAuth apps updated with the production redirect URIs
+  (`https://pathfolio-web.vercel.app/api/auth/callback/{google,github}`)
+  alongside the existing `localhost:3000` ones, so local dev keeps
+  working. `AUTH_URL` was pinned to `https://pathfolio-web.vercel.app`
+  in Vercel's env vars — without it NextAuth v5 falls back to the
+  per-deployment `VERCEL_URL` (which changes every push), breaking the
+  redirect-URI match
+- Since real secrets (DB passwords, OAuth client secrets, API keys)
+  passed through this chat session and through a temporary Vercel
+  access token, and the repo is public: **rotate `AUTH_SECRET` and the
+  Google/GitHub OAuth client secrets** when there's a moment — cheap to
+  do (`openssl rand -base64 32` for the former, a few clicks in each
+  console for the latter). Not urgent enough to have blocked shipping,
+  but shouldn't be left indefinitely
+- **Still open**: full manual login test on the live site wasn't done
+  by a human yet (only verified the OAuth redirect URI resolves
+  correctly, and that the Mongo-backed dashboard now returns `200 []`
+  after the Network Access List fix) — pick this up first next session
