@@ -501,6 +501,48 @@ something, add a line at the bottom instead of editing history above it.
     email landed via Resend. Deleted the temporary session afterward.
     Typecheck and lint clean (one unused-var warning fixed by swapping a
     destructuring-omit pattern for `Object.fromEntries`/`filter`).
+79. Built out Phase 8 (Behance UX case study) via the Figma MCP
+    connector: research (`docs/ux/research.md` — problem statement,
+    persona "Chloe Ngata", user flow, deliberately skipping empathy
+    mapping/competitive analysis/usability testing since there's no real
+    user pool for a solo demo), then wireframes, then hi-fi mockups,
+    then a wired prototype, all in a new Figma file ("PathFolio — UX
+    Case Study", https://www.figma.com/design/uai3qul7EejytWFnnXvfN0).
+    Referenced two real Behance case studies for structure/style: the
+    user-provided Donor Hub example and the user's own prior project
+    "Fortress — Wealth & Rental Portfolio App" (published the day
+    before this session, also built with Figma MCP + Claude) —
+    Fortress's Role/Tools/Scope framing and "one north-star number per
+    screen" pattern are worth carrying into the eventual case-study
+    write-up.
+    Caught and fixed two real mistakes along the way, both surfaced by
+    the user's own review rather than self-caught: (1) the entire first
+    wireframe pass was built at a 320px mobile-app frame size, copying
+    the mobile-app precedent from Donor Hub/Fortress, when PathFolio is
+    actually a web app (`apps/web`, browser-based, real max-width 640px)
+    — rebuilt all 6 screens at desktop web frame sizes; (2) hi-fi
+    screens initially left huge dead whitespace around a narrow centered
+    column on a 1280px canvas — fixed by adding a left sidebar app shell
+    (logo, nav, user profile) to the 3 post-auth screens, which also
+    gave the case study a more complete "real app" feel. Also caught,
+    unprompted this time: the wireframes' accent color
+    ({r:0.15,g:0.4,b:0.35}, a forest green) was near-identical to
+    Fortress's forest-green+gold identity — asked the user, then
+    recolored every screen to a blue-based palette instead, including a
+    stray gold persona-avatar color that the first color-replacement
+    pass missed.
+    Hi-fi mockups add real visual polish beyond the wireframe pass:
+    drop shadows, a gradient hero background + logo mark on Sign in,
+    color-coded allocation bars/swatches per asset class, a
+    gradient-fill area chart with a highlighted endpoint dot on Compare,
+    and status/change-percent detail on dashboard cards.
+    Built a real clickable prototype: 12 `ON_CLICK` → `NAVIGATE`
+    reactions (Sign in → Onboarding question → Onboarding result →
+    Dashboard, then Dashboard ↔ New scenario ↔ Compare via both primary
+    CTAs and sidebar nav items) — verified by reading every reaction's
+    `destinationId` back rather than assuming the writes took.
+    Still open: the Behance-style case-study write-up and the actual
+    publish (Behance publishing is a manual step only the user can do).
 71. Wrote `docs/diagrams/sequence/scenario-compare.md` — Phase 5's last
     remaining item, closing the phase out. Covers create (manual
     `POST /portfolios`) through compare (`/compare`'s two independent

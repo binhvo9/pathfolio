@@ -107,15 +107,30 @@ Independent of the engineering phases above — can start anytime, but works
 best once the Onboarding/Dashboard/Comparison flows (Phase 1/2/5) are
 scoped, since the case study needs real flow content to design against.
 
-- [ ] Pick which flow(s) to feature — likely onboarding + dashboard +
-      scenario comparison (the most demo-able, visual ones)
-- [ ] Figma project setup (new file, Pro account)
-- [ ] UX research artifacts: problem statement, persona, user flow diagram
-- [ ] Wireframes → high-fidelity mockups in Figma
-- [ ] Clickable prototype for the featured flow
+- [x] Pick which flow(s) to feature — Onboarding + Dashboard + Compare
+      (user-approved 2026-09-13), matching
+      `docs/diagrams/journey/first-time-user.md`
+- [x] Figma project setup — new file "PathFolio — UX Case Study"
+      (https://www.figma.com/design/uai3qul7EejytWFnnXvfN0), Pro plan
+- [x] UX research artifacts: problem statement, persona (Chloe Ngata,
+      27, Hamilton NZ), user flow diagram — `docs/ux/research.md` +
+      Figma "Cover & Research"/"User Flow" pages. Empathy mapping/
+      competitive analysis/usability testing deliberately skipped (no
+      real user pool for a solo demo — see research.md)
+- [x] Wireframes → high-fidelity mockups in Figma — 6 screens each
+      (Sign in, Onboarding question/result, Dashboard, New scenario,
+      Compare). Rebuilt once from an initial mobile-sized mistake to
+      correct desktop-web frames; hi-fi pass added a left sidebar app
+      shell, shadows, a blue brand palette (deliberately distinct from
+      the "Fortress" case study's forest-green+gold), and a
+      gradient-fill comparison chart
+- [x] Clickable prototype for the featured flow — 12 reactions wiring
+      Sign in → Onboarding (2 screens) → Dashboard ↔ New scenario ↔
+      Compare, verified by reading back every reaction's destination
 - [ ] Case study write-up in Behance style (process, decisions,
       before/after, final screens) — reference:
-      [Donor Hub Blood Donation App](https://www.behance.net/gallery/253760559/Donor-Hub-Blood-Donation-Mobile-App-UX-Case-Study),
+      [Donor Hub Blood Donation App](https://www.behance.net/gallery/253760559/Donor-Hub-Blood-Donation-Mobile-App-UX-Case-Study)
+      and the user's own [Fortress case study](https://www.behance.net/gallery/255617275/Fortress-Wealth-Rental-Portfolio-App),
       simpler scope is fine
 - [ ] Publish to Behance
 
