@@ -10,8 +10,10 @@ every portfolio is simulated. It exists to demonstrate system design and
 software architecture skills for a Business/Data Analyst portfolio aimed at
 NZ recruiters.
 
-Full write-up: [`docs/case-study.md`](./docs/case-study.md) — problem,
-design decisions, trade-offs, outcome.
+**Live demo:** [pathfolio-web.vercel.app](https://pathfolio-web.vercel.app)
+(sign in with Google or GitHub) · Full write-up:
+[`docs/case-study.md`](./docs/case-study.md) — problem, design decisions,
+trade-offs, outcome.
 
 ## Architecture at a glance
 
@@ -97,14 +99,14 @@ cd apps/web                  && npx next dev                           # :3000
 
 ## Status
 
-Phases 0–6 are complete and verified live end to end: onboarding, scenario
+Phases 0–7 are complete and verified live end to end: onboarding, scenario
 simulation, real market data, tumbling-window performance tracking,
-AI-generated comparisons with PDF export and email, the API Gateway, and
-the full diagram/OpenAPI set.
+AI-generated comparisons with PDF export and email, the API Gateway, the
+full diagram/OpenAPI set, and the live deploy itself — web on Vercel,
+gateway + 4 microservices on Railway (see
+[`docs/diagrams/deployment.md`](./docs/diagrams/deployment.md)).
 
-Not done yet (Phase 7, "ship it"): a publicly deployed live demo and a
-cleaned-up commit history — the written case study is done
-([`docs/case-study.md`](./docs/case-study.md)). See
+Only optional item left in Phase 7 is a walkthrough video/GIF. See
 [`BACKLOG.md`](./BACKLOG.md) for the full phase-by-phase checklist,
 including the separate Phase 8 Behance UX case study (independent track,
-not required for this engineering write-up).
+not required for this engineering write-up, also complete).
